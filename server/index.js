@@ -52,16 +52,16 @@ export const ChatBotStep = ({ chatBotId, tokenUser, answer, handler }) => [
   //     inputType: 'text',
   //     question: `
   // Welcome to Hybrid.Chat Enterprise Search Chatbot!
-
+  
   // I'm here to assist you with your document-related queries.
-
+  
   // Whether you need help finding information, understanding content, or navigating through documents, just ask away.
   // `,
   //     callBack: async (event, response) => {
   //       // actual processing
   //     }
   // }
-
+  
   {
     id: 0,
     inputType: 'await',
@@ -110,25 +110,25 @@ export const ChatBotStep = ({ chatBotId, tokenUser, answer, handler }) => [
               "message": "If the intent is 'Follow-up,' respond with a brief and concise summary or explanation based on the previous response or information provided. if the intent is gpt Response then we have to generate answer from chatgpt"
             } 
           }`;
-        const gpt_response_intent = await processUserResponse(intentPrompt);
+          const gpt_response_intent = await processUserResponse(intentPrompt);
           console.log("gpt response",gpt_response_intent)
           const contentObject = JSON.parse(gpt_response_intent.content)
           if(contentObject?.intent==='Casual' || contentObject?.output?.intent==='Casual'){
             const message = contentObject?.message || contentObject?.output?.intent
             return { nextStep: 2, toast: `${message}`, error: true, hideAnswer: false };
-        }
+          } 
           if(contentObject?.intent === 'ProblemSolving' || contentObject?.intent === 'InfoSeeking' || contentObject?.output?.intent === 'ProblemSolving' || contentObject?.output?.intent === 'InfoSeeking'){
-          let res = await sendRequest(event, response);
+            let res = await sendRequest(event, response);
             userData['last_response']=res;
-          event.user.setUserData(userData);
+            event.user.setUserData(userData);
             res = res.replace(/^\*\*Answer\*\*::\s*/, '');
             console.log("flag:::",contentObject?.flag )
             if (/^while I can't help/i.test(res) && (contentObject?.flag ===true || contentObject?.output?.flag === true)) {
               const message = contentObject?.message || contentObject?.output?.message
               return { nextStep: 2, toast: `${message}`, error: true, hideAnswer: false };
-          }
+            }
             return { nextStep: 2, toast: `${res}`, error: true, hideAnswer: false };
-        }
+          } 
           if(contentObject?.intent === 'Follow-up' || contentObject?.output?.intent === 'Follow-up'){
             console.log("message",contentObject)
             const message = contentObject?.message || contentObject?.output?.message
@@ -138,7 +138,7 @@ export const ChatBotStep = ({ chatBotId, tokenUser, answer, handler }) => [
           else{
             const message = contentObject?.message || contentObject?.output?.message
             return { nextStep: 2, toast: `${message}`, error: true, hideAnswer: false };
-        }
+          }
 
       } catch (err) {
         console.log(err)
