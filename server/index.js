@@ -52,16 +52,16 @@ export const ChatBotStep = ({ chatBotId, tokenUser, answer, handler }) => [
   //     inputType: 'text',
   //     question: `
   // Welcome to Hybrid.Chat Enterprise Search Chatbot!
-  
+
   // I'm here to assist you with your document-related queries.
-  
+
   // Whether you need help finding information, understanding content, or navigating through documents, just ask away.
   // `,
   //     callBack: async (event, response) => {
   //       // actual processing
   //     }
   // }
-  
+
   {
     id: 0,
     inputType: 'await',
@@ -110,25 +110,25 @@ export const ChatBotStep = ({ chatBotId, tokenUser, answer, handler }) => [
               "message": "If the intent is 'Follow-up,' respond with a brief and concise summary or explanation based on the previous response or information provided. if the intent is gpt Response then we have to generate answer from chatgpt"
             } 
           }`;
-          const gpt_response_intent = await processUserResponse(intentPrompt);
+        const gpt_response_intent = await processUserResponse(intentPrompt);
           console.log("gpt response",gpt_response_intent)
           const contentObject = JSON.parse(gpt_response_intent.content)
           if(contentObject?.intent==='Casual' || contentObject?.output?.intent==='Casual'){
             const message = contentObject?.message || contentObject?.output?.intent
             return { nextStep: 2, toast: `${message}`, error: true, hideAnswer: false };
-          } 
+        }
           if(contentObject?.intent === 'ProblemSolving' || contentObject?.intent === 'InfoSeeking' || contentObject?.output?.intent === 'ProblemSolving' || contentObject?.output?.intent === 'InfoSeeking'){
-            let res = await sendRequest(event, response);
+          let res = await sendRequest(event, response);
             userData['last_response']=res;
-            event.user.setUserData(userData);
+          event.user.setUserData(userData);
             res = res.replace(/^\*\*Answer\*\*::\s*/, '');
             console.log("flag:::",contentObject?.flag )
             if (/^while I can't help/i.test(res) && (contentObject?.flag ===true || contentObject?.output?.flag === true)) {
               const message = contentObject?.message || contentObject?.output?.message
               return { nextStep: 2, toast: `${message}`, error: true, hideAnswer: false };
-            }
+          }
             return { nextStep: 2, toast: `${res}`, error: true, hideAnswer: false };
-          } 
+        }
           if(contentObject?.intent === 'Follow-up' || contentObject?.output?.intent === 'Follow-up'){
             console.log("message",contentObject)
             const message = contentObject?.message || contentObject?.output?.message
@@ -138,7 +138,7 @@ export const ChatBotStep = ({ chatBotId, tokenUser, answer, handler }) => [
           else{
             const message = contentObject?.message || contentObject?.output?.message
             return { nextStep: 2, toast: `${message}`, error: true, hideAnswer: false };
-          }
+        }
 
       } catch (err) {
         console.log(err)
@@ -247,128 +247,25 @@ export const insertUserDataWithKey = (
 };
 
 export const start = async (handler, question) => {
-  const { chatBotId, headers, axiosInstance, user, chain } = handler;
-  let tokenUser = {};
-
-  if (conversational) {
-    const token = headers?.authorization || '';
-    if (token) {
-      axiosInstance.defaults.headers.common['Authorization'] = token;
-      try {
-        const res = await axiosInstance.get(openid.userinfo_endpoint);
-        tokenUser = res.data;
-      } catch (error) {}
-    }
-
-    let currentStep = await user.getlastStep();
-    let answ = ChatBotStep({ chatBotId, tokenUser, handler }).find(
-      (item) => item.id == currentStep,
-    );
-
-    if (answ === undefined) {
-      return {
-        text: 'Chatbot flow ended!',
-        hideAnswer: true,
-        currentStep: { inputHidden: true },
-        src: 'talkingDb',
-      };
-    }
-
-    if (answ.preHook) {
-      const { nextStep, error } = await answ.preHook(handler, question);
-      if (error === false) {
-        user.setlastStep(nextStep);
-        return await start(handler, question);
-      }
-    }
-
-    if (!user.getData('firstCall')?.answer) {
-      insertUserDataWithKey(handler, 'firstCall', 'true', 'text', false);
-      await user.save();
-      if (answ.inputType === 'await') {
-        answ['await'] = 1000;
-      }
-      return {
-        text: answ.question,
-        src: 'talkingDb',
-        currentStep: answ,
-        hideAnswer: false,
-      };
-    }
-
-    if (answ.callBack) {
-      const { nextStep, toast, error, hideAnswer, answer } =
-        await answ.callBack(handler, question);
-      user.setlastStep(nextStep);
-      await user.save();
-
-      answ = ChatBotStep({ chatBotId, tokenUser, answer }).find(
-        (item) => item.id == nextStep,
-      );
-
-      if (answ === undefined) {
-        return {
-          text: 'Chatbot flow ended!',
-          currentStep: { inputHidden: true },
-          src: 'talkingDb',
-        };
-      }
-
-      if (answ.apiCall) {
-        answ.options = await answ.apiResult(handler);
-      }
-
-      if (answ.inputType === 'summary') {
-        answ['data'] = user.getUserData();
-      }
-
-      if (answ.inputType === 'await') {
-        answ['await'] = 1000;
-      }
-
-      if (error) {
-        const clonedObject = JSON.parse(JSON.stringify(answ));
-        clonedObject['answer'] = question;
-
-        if (answ.inputType === 'fileUploader') {
-          const { fileName, imageData } = JSON.parse(question);
-          clonedObject['answer'] = fileName;
-          clonedObject['showQuestion'] = true;
-          delete clonedObject.header;
-        }
-
-        if (answ.inputType === 'googleLogin') {
-          clonedObject['answer'] = JSON.parse(question).email;
-          clonedObject['showQuestion'] = true;
-        }
-
-        answ = clonedObject;
-      }
-
-      if (answ.header) {
-        answ['update'] = true;
-      }
-
-      return {
-        text: answ.question,
-        src: 'talkingDb',
-        currentStep: answ,
-        error,
-        errorMessage: toast || '',
-        hideAnswer: hideAnswer || false,
-      };
-    }
-
+  if (!question || !question.trim()) {
     return {
-      text: answ.question,
-      src: 'talkingDb',
-      currentStep: answ,
-      error,
-      errorMessage: toast || '',
-      hideAnswer: hideAnswer || false,
+      text: "",
+      src: "talkingDb",
+      currentStep: null,
+      hideAnswer: true,
     };
-  } else {
-    const response = await chain.run(question);
-    return response;
   }
+  return {
+    text: "That's a great question user!",
+    src: "talkingDb",
+    currentStep: {
+      id: 1,
+      question: question,
+      inputType: "text",
+      options: [],
+    },
+    error: false,
+    errorMessage: "",
+    hideAnswer: false,
+  };
 };
