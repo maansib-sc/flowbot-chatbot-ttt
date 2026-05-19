@@ -29,6 +29,8 @@ export const openid = {
   export const conversational = true;
   export const loaderEnabled = true;
   export const referenceDocumentViewEnabled = true;
+  export const hideUserIcon = true;
+  export const hideBotIcon = false;
   
   export const howToUseSteps = [
   {
