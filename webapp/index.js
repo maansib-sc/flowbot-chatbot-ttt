@@ -1,56 +1,60 @@
 export const openid = {
-    authorization_endpoint: '',
-    token_endpoint: '',
-    userinfo_endpoint: '',
-    scopes_supported: ['openid', 'profile', 'email'],
-    client_id: '',
-    realm: '',
-  };
-  
-  export const getTitle = 'AI Document Chat';
-  export const getWelcomeMessage = "Upload your documents and start chatting to get AI-powered answers.";
-  export const getInputPlaceholder = 'Type your question here...';
-  
-  export const sendIcon = `
+  authorization_endpoint: "",
+  token_endpoint: "",
+  userinfo_endpoint: "",
+  scopes_supported: ["openid", "profile", "email"],
+  client_id: "",
+  realm: "",
+};
+
+export const getTitle = "AI Document Chat";
+export const getWelcomeMessage =
+  "Upload your documents and start chatting to get AI-powered answers.";
+export const getInputPlaceholder = "Type your question here...";
+
+export const sendIcon = `
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M22 2L11 13"></path>
     <path d="M22 2L15 22L11 13L2 9L22 2"></path>
   </svg>
   `;
-  
-  export const themeColor = '#3b82f6';
-  export const Navbar = true;
-  export const botName = 'James Bot';
-  export const enabled = true;
-  export const showUserResponseFirst = true;
-  export const hideEditButton = true;
-  export const leftPanelEnabled = true;
-  export const drawerEnabled = true;
-  export const conversational = true;
-  export const loaderEnabled = true;
-  export const referenceDocumentViewEnabled = true;
-  export const hideUserIcon = true;
-  export const hideBotIcon = false;
-  
-  export const howToUseSteps = [
+
+export const themeColor = "#3b82f6";
+export const Navbar = true;
+export const botName = "James Bot";
+export const enabled = true;
+export const showUserResponseFirst = true;
+export const hideEditButton = true;
+export const leftPanelEnabled = true;
+export const drawerEnabled = true;
+export const conversational = true;
+export const loaderEnabled = true;
+export const referenceDocumentViewEnabled = true;
+export const hideUserIcon = true;
+export const hideBotIcon = false;
+
+export const howToUseSteps = [
   {
     number: 1,
-    title: 'Upload Your Documents',
-    description: 'Click the upload button in the drawer to add PDF, DOCX, or TXT files.'
+    title: "Upload Your Documents",
+    description:
+      "Click the upload button in the drawer to add PDF, DOCX, or TXT files.",
   },
   {
     number: 2,
-    title: 'Wait for Processing',
-    description: 'Wait for the document to be processed. This may take a moment.'
+    title: "Wait for Processing",
+    description:
+      "Wait for the document to be processed. This may take a moment.",
   },
   {
     number: 3,
-    title: 'Start Chatting',
-    description: 'Type your question in the chat box and press Send to get AI-powered answers.'
-  }
+    title: "Start Chatting",
+    description:
+      "Type your question in the chat box and press Send to get AI-powered answers.",
+  },
 ];
-  
-  export const leftPanelHtml = `
+
+export const leftPanelHtml = `
   <style>
     .ttt-left-panel {
       width: 220px;
@@ -123,16 +127,16 @@ export const openid = {
     </button>
   </div>
 `;
-  
-  export const handleLeftPanel = (f, d) => {
-    if (f === 'toggle') {
-      const cardId = d;
-      const content = document.getElementById(cardId + '-content');
-      content.classList.toggle('active');
-    }
-  };
 
-  export const headerPaneHtml = `
+export const handleLeftPanel = (f, d) => {
+  if (f === "toggle") {
+    const cardId = d;
+    const content = document.getElementById(cardId + "-content");
+    content.classList.toggle("active");
+  }
+};
+
+export const headerPaneHtml = `
   <style>
     .ttt-header {
       display: flex;
@@ -245,51 +249,53 @@ export const openid = {
 `;
 
 export const handleHeaderPane = (f) => {
-    if (f === 'logout') {
-      localStorage.removeItem('access_token');
-      window.location.reload();
-    }
-  
-    if (f === 'login') {
-      setTimeout(() => {
-        const logout = document.getElementById('logout-btn');
-        logout && logout.classList.add('active');
-        const prompt = document.getElementById('prompt-btn');
-        prompt && prompt.classList.add('active');
-        const publish = document.getElementById('publish-btn');
-        publish && publish.classList.add('active');
-      }, 5000);
-    }
-  };
-  
-  
-  export const leftPanelStateUpdate = stepIndex => {
-    stepIndex = stepIndex - 1;
-    const steps = document.querySelectorAll('.step');
-    steps.forEach((step, index) => {
-      step.classList.remove('completed', 'active', 'upcoming');
-      if (index < stepIndex) {
-        step.classList.add('completed');
-      } else if (index === stepIndex) {
-        step.classList.add('active');
-      } else {
-        step.classList.add('upcoming');
-      }
-    });
-  };
-  
-  export const showUserEnteredPassword = false;
-  export const finalMessage = 'Thanks for chatting with James Bot!';
-  
-  export const editButtonColor = "#3b82f6";
+  if (f === "logout") {
+    localStorage.removeItem("access_token");
+    window.location.reload();
+  }
 
-  export const trainedChatbotUrl = "https://llm-connect.kg.hybrid.chat/data/list?chatbot_id=document-pQc007";
-  export const trainedChatbotProgressUrl= "https://llm-connect.kg.hybrid.chat/data/progress?file_name=";
-  export const documentUploadUrl = "https://llm-connect.kg.hybrid.chat/data/upload?chatbot_id=document-pQc007";
-  export const trainedChatbotId = "pQc007";
-  export const trainedChatbotAPIKey= "rooifQWjo8wH4uwvSYtWtUiXavzhjbXe";
+  if (f === "login") {
+    setTimeout(() => {
+      const logout = document.getElementById("logout-btn");
+      logout && logout.classList.add("active");
+      const prompt = document.getElementById("prompt-btn");
+      prompt && prompt.classList.add("active");
+      const publish = document.getElementById("publish-btn");
+      publish && publish.classList.add("active");
+    }, 5000);
+  }
+};
 
-  export const chatbotIcon = `
+export const leftPanelStateUpdate = (stepIndex) => {
+  stepIndex = stepIndex - 1;
+  const steps = document.querySelectorAll(".step");
+  steps.forEach((step, index) => {
+    step.classList.remove("completed", "active", "upcoming");
+    if (index < stepIndex) {
+      step.classList.add("completed");
+    } else if (index === stepIndex) {
+      step.classList.add("active");
+    } else {
+      step.classList.add("upcoming");
+    }
+  });
+};
+
+export const showUserEnteredPassword = false;
+export const finalMessage = "Thanks for chatting with James Bot!";
+
+export const editButtonColor = "#3b82f6";
+
+export const trainedChatbotUrl =
+  "https://llm-connect.kg.hybrid.chat/data/list?chatbot_id=document-pQc007";
+export const trainedChatbotProgressUrl =
+  "https://llm-connect.kg.hybrid.chat/data/progress?file_name=";
+export const documentUploadUrl =
+  "https://llm-connect.kg.hybrid.chat/data/upload?chatbot_id=document-pQc007";
+export const trainedChatbotId = "pQc007";
+export const trainedChatbotAPIKey = "rooifQWjo8wH4uwvSYtWtUiXavzhjbXe";
+
+export const chatbotIcon = `
     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="12" cy="12" r="10" stroke="#3b82f6" stroke-width="2"/>
       <circle cx="12" cy="10" r="3" fill="#3b82f6"/>
