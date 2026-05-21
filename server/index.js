@@ -13,6 +13,7 @@ export const openid = {
 
 const GPT_BEARER_TOKEN =  process.env.GPT_BEARER_TOKEN;
 const TRAINED_URL ='https://kg.hybrid.chat/api/chat?pinecone_name_space=document-pQc007';
+const TTT_URL=process.env.TTT_URL;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -154,17 +155,16 @@ export const ChatBotStep = ({ chatBotId, tokenUser, answer, handler }) => [
 ];
 
 const sendRequest = async (handler, question) => {
-  const body = {
-    history: [],
-    question,
-    session: handler.user.sessionId,
-  };
   try {
-    const response = await axios.post(TRAINED_URL, body);
-    return response.data.text;
+    const response = await axios.get(TTT_URL);
+    if (response.status === 200) {
+          return response.data;
+    } else {
+      return "non reachable";
+    }
   } catch (err) {
-    console.log('eror', err);
-    throw err;
+    console.log("Error during sendRequest");
+    return "The TTT is not reachable"
   }
 };
 
@@ -255,8 +255,9 @@ export const start = async (handler, question) => {
       hideAnswer: true,
     };
   }
+  let result=await sendRequest(handler,question)
   return {
-    text: "That's a great question user!",
+    text: result,
     src: "talkingDb",
     currentStep: {
       id: 1,
