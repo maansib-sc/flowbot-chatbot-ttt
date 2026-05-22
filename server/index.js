@@ -11,9 +11,9 @@ export const openid = {
   realm: "",
 };
 
-const GPT_BEARER_TOKEN = process.env.GPT_BEARER_TOKEN;
-const TRAINED_URL =
-  "https://kg.hybrid.chat/api/chat?pinecone_name_space=document-pQc007";
+const GPT_BEARER_TOKEN =  process.env.GPT_BEARER_TOKEN;
+const TRAINED_URL ='https://kg.hybrid.chat/api/chat?pinecone_name_space=document-pQc007';
+const TTT_URL=process.env.TTT_URL;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -196,17 +196,16 @@ export const ChatBotStep = ({ chatBotId, tokenUser, answer, handler }) => [
 ];
 
 const sendRequest = async (handler, question) => {
-  const body = {
-    history: [],
-    question,
-    session: handler.user.sessionId,
-  };
   try {
-    const response = await axios.post(TRAINED_URL, body);
-    return response.data.text;
+    const response = await axios.get(TTT_URL);
+    if (response.status === 200) {
+          return response.data;
+    } else {
+      return "non reachable";
+    }
   } catch (err) {
-    console.log("eror", err);
-    throw err;
+    console.log("Error during sendRequest");
+    return "The TTT is not reachable"
   }
 };
 
@@ -289,128 +288,26 @@ export const insertUserDataWithKey = (
 };
 
 export const start = async (handler, question) => {
-  const { chatBotId, headers, axiosInstance, user, chain } = handler;
-  let tokenUser = {};
-
-  if (conversational) {
-    const token = headers?.authorization || "";
-    if (token) {
-      axiosInstance.defaults.headers.common["Authorization"] = token;
-      try {
-        const res = await axiosInstance.get(openid.userinfo_endpoint);
-        tokenUser = res.data;
-      } catch (error) {}
-    }
-
-    let currentStep = await user.getlastStep();
-    let answ = ChatBotStep({ chatBotId, tokenUser, handler }).find(
-      (item) => item.id == currentStep
-    );
-
-    if (answ === undefined) {
-      return {
-        text: "Chatbot flow ended!",
-        hideAnswer: true,
-        currentStep: { inputHidden: true },
-        src: "talkingDb",
-      };
-    }
-
-    if (answ.preHook) {
-      const { nextStep, error } = await answ.preHook(handler, question);
-      if (error === false) {
-        user.setlastStep(nextStep);
-        return await start(handler, question);
-      }
-    }
-
-    if (!user.getData("firstCall")?.answer) {
-      insertUserDataWithKey(handler, "firstCall", "true", "text", false);
-      await user.save();
-      if (answ.inputType === "await") {
-        answ["await"] = 1000;
-      }
-      return {
-        text: answ.question,
-        src: "talkingDb",
-        currentStep: answ,
-        hideAnswer: false,
-      };
-    }
-
-    if (answ.callBack) {
-      const { nextStep, toast, error, hideAnswer, answer } =
-        await answ.callBack(handler, question);
-      user.setlastStep(nextStep);
-      await user.save();
-
-      answ = ChatBotStep({ chatBotId, tokenUser, answer }).find(
-        (item) => item.id == nextStep
-      );
-
-      if (answ === undefined) {
-        return {
-          text: "Chatbot flow ended!",
-          currentStep: { inputHidden: true },
-          src: "talkingDb",
-        };
-      }
-
-      if (answ.apiCall) {
-        answ.options = await answ.apiResult(handler);
-      }
-
-      if (answ.inputType === "summary") {
-        answ["data"] = user.getUserData();
-      }
-
-      if (answ.inputType === "await") {
-        answ["await"] = 1000;
-      }
-
-      if (error) {
-        const clonedObject = JSON.parse(JSON.stringify(answ));
-        clonedObject["answer"] = question;
-
-        if (answ.inputType === "fileUploader") {
-          const { fileName, imageData } = JSON.parse(question);
-          clonedObject["answer"] = fileName;
-          clonedObject["showQuestion"] = true;
-          delete clonedObject.header;
-        }
-
-        if (answ.inputType === "googleLogin") {
-          clonedObject["answer"] = JSON.parse(question).email;
-          clonedObject["showQuestion"] = true;
-        }
-
-        answ = clonedObject;
-      }
-
-      if (answ.header) {
-        answ["update"] = true;
-      }
-
-      return {
-        text: answ.question,
-        src: "talkingDb",
-        currentStep: answ,
-        error,
-        errorMessage: toast || "",
-        hideAnswer: hideAnswer || false,
-      };
-    }
-
+  if (!question || !question.trim()) {
     return {
-      text: answ.question,
+      text: "",
       src: "talkingDb",
-      currentStep: answ,
-      error,
-      errorMessage: toast || "",
-      hideAnswer: hideAnswer || false,
+      currentStep: null,
+      hideAnswer: true,
     };
-  } else {
-    const response = await chain.run(question);
-    return response;
   }
+  let result=await sendRequest(handler,question)
+  return {
+    text: result,
+    src: "talkingDb",
+    currentStep: {
+      id: 1,
+      question: question,
+      inputType: "text",
+      options: [],
+    },
+    error: false,
+    errorMessage: "",
+    hideAnswer: false,
+  };
 };
