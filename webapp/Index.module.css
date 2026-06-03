@@ -161,120 +161,264 @@
   background: #2563eb;
 }
 
-/* Upload progress card */
-.uploadProgressCard {
-  padding: 16px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-}
-
-.uploadProgressHeader {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.uploadFileName {
-  font-size: 13px;
-  color: #374151;
-  font-weight: 500;
-}
-
-.uploadProgressBarBg {
-  width: 100%;
-  height: 6px;
-  background: #e5e7eb;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.uploadProgressBarFill {
-  height: 100%;
-  background: #3b82f6;
-  border-radius: 3px;
-  transition: width 0.2s ease;
-}
-
-.uploadProgressFooter {
+/* Drawer header */
+.HamburgerHeaderTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px;
-  font-size: 12px;
+}
+
+.drawerCloseBtn {
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 16px;
+  line-height: 1;
+  padding: 4px;
+}
+
+.drawerCloseBtn:hover {
+  color: #4b5563;
+}
+
+.drawerSubtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 6px 0 0;
+  line-height: 1.4;
+}
+
+/* Drag-and-drop zone */
+.dropZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 24px 16px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dropZone:hover,
+.dropZoneActive {
+  border-color: #3b82f6;
+  background: #f8fafc;
+}
+
+.dropZoneIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #dbeafe;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropZoneTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.dropZoneOr {
+  font-size: 13px;
   color: #6b7280;
 }
 
-.uploadCancelBtn {
-  background: none;
-  border: none;
-  color: #ef4444;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 2px 8px;
-  border-radius: 4px;
+.dropZoneHint {
+  font-size: 11px;
+  color: #9ca3af;
 }
 
-.uploadCancelBtn:hover {
-  background: #fef2f2;
+/* Uploads section */
+.uploadsSection {
+  padding: 0 16px 8px;
 }
 
-/* Upload error card */
-.uploadErrorCard {
-  padding: 16px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+.uploadsHeader {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin: 16px 0 10px;
+}
+
+/* Per-file card */
+.fileCard {
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-.uploadErrorHeader {
+.fileCardTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fileIcon {
+  flex-shrink: 0;
+}
+
+.fileMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.fileName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fileSub {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+.fileStatusRight {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
-.uploadErrorText {
+.filePercent {
   font-size: 13px;
-  color: #dc2626;
-  font-weight: 500;
+  font-weight: 600;
+  color: #3b82f6;
 }
 
-.uploadErrorActions {
+.fileCancelX {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 2px;
+}
+
+.fileCancelX:hover {
+  color: #ef4444;
+}
+
+.fileDoneLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #10b981;
+}
+
+.fileErrorIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid #ef4444;
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fileProgressBg {
+  width: 100%;
+  height: 5px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 10px 0 8px;
+}
+
+.fileProgressFill {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.fileProgressProcessing {
+  background: #8b5cf6;
+}
+
+.fileProgressDone {
+  background: #10b981;
+}
+
+.fileProgressError {
+  background: #fca5a5;
+}
+
+.fileStatusLabel {
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fileStatusUploading {
+  color: #3b82f6;
+}
+
+.fileStatusProcessing {
+  color: #8b5cf6;
+}
+
+.fileStatusDone {
+  color: #10b981;
+}
+
+.cancelHint {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 6px;
+}
+
+.fileErrorActions {
   display: flex;
   gap: 8px;
 }
 
-.uploadRetryBtn {
-  padding: 6px 12px;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 6px;
+.fileRetryBtn {
+  flex: 1;
+  padding: 7px 12px;
+  background: #ffffff;
+  color: #3b82f6;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
 }
 
-.uploadRetryBtn:hover {
-  background: #2563eb;
+.fileRetryBtn:hover {
+  background: #eff6ff;
 }
 
-.uploadRemoveBtn {
-  padding: 6px 12px;
-  background: white;
-  color: #6b7280;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
+.fileRemoveBtn {
+  flex: 1;
+  padding: 7px 12px;
+  background: #ffffff;
+  color: #ef4444;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
 }
 
-.uploadRemoveBtn:hover {
-  background: #f9fafb;
+.fileRemoveBtn:hover {
+  background: #fef2f2;
 }
 
 /* Input field */
@@ -303,24 +447,27 @@
 
 .addButton {
   position: absolute;
-  left: 28px;
-  bottom: 28px;
-  width: 40px;
-  height: 40px;
-  background: #f3f4f6;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  background: none;
   color: #6b7280;
-  border: none;
-  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
+  z-index: 1;
 }
 
 .addButton:hover {
-  background: #e5e7eb;
-  color: #3b82f6;
+  background: #f3f4f6;
+  color: #1f2937;
+  border-color: #9ca3af;
 }
 
 .addButton:disabled {
@@ -426,7 +573,7 @@
   position: relative;
   resize: none;
   font-size: 1rem;
-  padding: 1rem 3rem 1rem 1rem;
+  padding: 1rem 3rem 1rem 3.5rem;
   width: 100%;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
@@ -598,15 +745,33 @@
   height: 100%;
   flex-direction: column;
   width: 320px;
-  min-width: 320px;
+  min-width: 250px;
+  max-width: 600px;
   background: #fafafa;
   border-left: 1px solid #e5e7eb;
-  overflow: hidden;
+  overflow: auto;
+  position: relative;
 }
 
 .HamburgerHeaderContainer {
   padding: 24px 20px 16px;
   border-bottom: 1px solid #e5e7eb;
+}
+
+.drawerResizeHandle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  cursor: col-resize;
+  background: transparent;
+  transition: background 0.2s;
+  z-index: 10;
+}
+
+.drawerResizeHandle:hover {
+  background: #3b82f6;
 }
 .HamburgerHeader {
   font-size: 20px;
@@ -624,8 +789,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 0 20px;
-  margin-top: 16px;
+  padding: 0 16px 20px;
+  flex: none;
+  overflow-y: visible;
 }
 
 .DataItem {
@@ -650,7 +816,7 @@
 .Divider {
   border: none;
   border-top: 1px solid #e5e7eb;
-  margin: 20px 0;
+  margin: 16px 16px;
 }
 
 .UploaderHeader {
@@ -659,16 +825,11 @@
   color: #9ca3af;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  padding: 0 20px 12px;
-  margin-top: 20px;
+  padding: 0 20px 8px;
 }
 
 .UploadContainer {
-  margin: 20px;
-  border: 2px dashed #d1d5db;
-  border-radius: 12px;
-  background: #ffffff;
-  padding: 32px 24px;
+  padding: 16px 16px 0;
 }
 
 .UploadButtonContainer {
@@ -1559,6 +1720,9 @@
 .cloudform {
   position: relative;
   width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 12px 16px;
 }
 
 .pdfContainer {
@@ -1590,14 +1754,15 @@
 .textarea {
   position: relative;
   resize: none;
-  font-size: 1.1rem;
-  padding: 1rem 2rem 1rem 2rem;
+  font-size: 1rem;
+  padding: 14px 52px 14px 48px;
   width: 100%;
-  border-radius: 0.5rem;
-  border: 1px solid #d9d9e3;
-  background: #ffffff;
-  color: #3a4664;
+  border-radius: 24px;
+  border: 1px solid #e5e7eb;
+  background: #f4f4f4;
+  color: #1f2937;
   outline: none;
+  line-height: 1.5;
 }
 
 .textarea:disabled {
@@ -1606,49 +1771,54 @@
 
 .textarea:focus {
   outline: none;
-  border-color: #6b7280;
-  box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.5);
+  border-color: #d1d5db;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .textarea::placeholder {
-  color: #6b7280;
+  color: #9ca3af;
 }
 
 .generatebutton {
   position: absolute;
-  top: 0.87rem;
-  right: 1rem;
-  color: rgb(165, 162, 162);
-  background: none;
-  padding: 0.3rem;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  color: white;
+  background: #1f1f1f;
+  padding: 0;
   border: none;
   display: flex;
-  border-radius: 6px;
-  transform: translateX(-10px);
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .loadingwheel {
-  position: absolute;
-  top: 0.2rem;
-  right: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .svgicon {
-  transform: rotate(90deg);
   width: 1.2em;
   height: 1.2em;
   fill: currentColor;
 }
 
 .generatebutton:hover {
-  background: #e4575726;
-  border-radius: 0.2rem;
+  background: #3b3b3b;
 }
 
 .generatebutton:disabled {
-  opacity: 0.9;
+  opacity: 0.4;
   cursor: not-allowed;
-  background: none;
+  background: #d1d5db;
 }
 
 .attachmentButton {
