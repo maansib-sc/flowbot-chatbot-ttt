@@ -27,6 +27,20 @@ const sendRequest = async (handler, question) => {
   }
 };
 
+const responseGenerationPrompt = (userQuery, documentContent) => {
+  return `
+    Answer the user's question using the provided relevant content.
+
+    Question:
+    ${userQuery}
+
+    Relevant content:
+    ${documentContent}
+
+    If the relevant content does not contain any hints to the answer, say "Sorry, I don't have an answer for that."
+  `;
+}
+
 const refineBotResponse = async (prompt) => {
   try {
     const url = "https://api.openai.com/v1/chat/completions";
@@ -48,10 +62,10 @@ const refineBotResponse = async (prompt) => {
     const response = await axios.post(url, body, { headers });
     const structuredData = response.data.choices[0].message;
 
-    return structuredData;
+    return structuredData?.text?.content;
   } catch (error) {
     console.error("Error in ChatGPT Request:", error?.response?.data);
-    return "Error in ChatGPT Request";
+    return false;
   }
 };
 
@@ -64,9 +78,19 @@ export const start = async (handler, question) => {
       hideAnswer: true,
     };
   }
+
+  // getting the query relevant content from document trained;
   let tttResponse = await sendRequest(handler,question)
+
+  // preparing response for the user by using the relevant content retrieved
+  let responsePrompt = responseGenerationPrompt(question, tttResponse)
+  let finalResponse = await refineBotResponse(responsePrompt)
+  if (!finalResponse) {
+    finalResponse = "Sorry, I don't have an answer for that."
+  }
+  
   return {
-    text: tttResponse,
+    text: finalResponse,
     src: "talkingDb",
     currentStep: {
       id: 1,
