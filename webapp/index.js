@@ -37,20 +37,17 @@ export const howToUseSteps = [
   {
     number: 1,
     title: "Upload Your Documents",
-    description:
-      "Click the upload button in the drawer to add PDF, DOCX, or TXT files.",
+    description: "Tap + to add your files.",
   },
   {
     number: 2,
     title: "Wait for Processing",
-    description:
-      "Wait for the document to be processed. This may take a moment.",
+    description: "Your document will be analyzed in a moment.",
   },
   {
     number: 3,
     title: "Start Chatting",
-    description:
-      "Type your question in the chat box and press Send to get AI-powered answers.",
+    description: "Ask any question about your document.",
   },
 ];
 
