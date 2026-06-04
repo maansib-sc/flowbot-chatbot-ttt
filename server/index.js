@@ -1,6 +1,7 @@
 const axios = require("axios");
 
 export const conversational = true;
+export const pollingInterval = 400;
 
 export const openid = {
   authorization_endpoint: "",
