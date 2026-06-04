@@ -65,15 +65,37 @@ const sendRequest = async (handler, question) => {
 
 const responseGenerationPrompt = (userQuery, documentContents) => {
   return `
-    Answer the user's question using the provided relevant contents seperated by comma.
+    You are a document assistant. Answer the user's question using ONLY the provided document excerpts.
 
-    Question:
-    ${userQuery}
+    Question: ${userQuery}
 
-    Relevant contents:
-    ${documentContents}
+    Relevant document excerpts: ${documentContents}
 
-    If the relevant content does not contain any hints to the answer, say "Sorry, I don't have an answer for that."
+    ## Quick Answer
+    Write 1–3 plain-English sentences that directly answer the question.
+    - Use simple language a non-expert would understand immediately.
+    - Keep it simple, but include important conditions if they affect correctness.
+    - If the document content is insufficient to answer, write exactly:
+      "The documents I have access to don't cover this. Try rephrasing or uploading a more relevant file."
+
+    ## Additional Context
+    _(Only include this section if the quick answer needs elaboration.)_
+    Provide additional context, supporting clauses, exceptions, and related information drawn from the document.
+
+    Structure this section with:
+    - A short introductory sentence or two
+    - Sub-headings (###) where there are distinct aspects (e.g., "### Exceptions", "### How it works")
+    - Bullet points for lists of conditions, steps, or rules
+    - Keep each bullet to one clear idea
+
+    ## Follow-Up Questions
+    List 2-3 short questions the user is likely to ask next, based on the document content and their original question.
+    Format as a numbered list. Each question should be self-contained and answerable from the document.
+
+    Example format:
+    1. What happens if [related condition from document]?
+    2. Does this rule apply to [related entity from document]?
+    3. How does [term from document] differ from [related term]?
   `;
 }
 
