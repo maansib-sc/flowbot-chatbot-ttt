@@ -1,7 +1,8 @@
 const axios = require("axios");
 const dotenv = require("dotenv");
+const path = require("path");
 dotenv.config({
-  path: "/app/configuration/flowbot-chatbot-ttt/server/.env"
+  path: path.join(__dirname, "../../configuration/flowbot-chatbot-ttt/server/.env")
 });
 
 
@@ -17,12 +18,13 @@ export const openid = {
   realm: "",
 };
 
-const GPT_BEARER_TOKEN = process.env.GPT_BEARER_TOKEN;
+const GPT_BEARER_TOKEN = process?.env?.GPT_BEARER_TOKEN;
 const TTT_URL = process?.env?.TTT_URL;
+const MAX_RESULTS_FROM_TTT_PER_REQUEST = 5
 
 const sendRequest = async (handler, question) => {
   try {
-    let graphIds = handler?.user?.sessionId
+    let graphIds = handler?.user?.graphIds
 
     // TODO:: REMOVE hardcoded
     // we are hardcoding a graph id here as it is not attached yet in handler
@@ -30,7 +32,7 @@ const sendRequest = async (handler, question) => {
     const requestBody = {
       "graph_ids": graphIds,
       "text": question,
-      "max_results": 5
+      "max_results": MAX_RESULTS_FROM_TTT_PER_REQUEST
     }
     
     const response = await axios.post(
@@ -44,21 +46,21 @@ const sendRequest = async (handler, question) => {
         }
       }
     );
-    if (response.status === 200) {
-      const relevantElements = response?.data?.elements || []
-      if (relevantElements?.length > 0) {
-        const contents = relevantElements.map(item => item?.content);
-        return contents
-      } else {
-        console.log("didn't found any relevant contents")
-        return []
-      }
+    
+    const relevantElements = response?.data?.elements || []
+    if (relevantElements?.length > 0) {
+      const contents = relevantElements.map(item => item?.content).filter(content => typeof content === 'string' && content.trim());
+      return contents
     } else {
-      console.log("non reachable")
-      return [];
+      console.log("didn't find any relevant contents")
+      return []
     }
   } catch (err) {
-    console.log("Error during sendRequest", err);
+    console.error("TTT request failed", {
+      message: err?.message,
+      status: err?.response?.status,
+      responseData: err?.response?.data
+    });
     return []
   }
 };
@@ -66,7 +68,7 @@ const sendRequest = async (handler, question) => {
 const responseGenerationPrompt = (userQuery, documentContents) => {
   return `
     You are a document assistant. Answer the user's question using ONLY the provided document excerpts.
-
+    
     Question: ${userQuery}
 
     Relevant document excerpts: ${documentContents}
@@ -138,12 +140,12 @@ export const start = async (handler, question) => {
   }
 
   // getting the query relevant content from document trained;
-  let tttResponse = await sendRequest(handler,question)
+  const tttResponse = await sendRequest(handler,question)
 
   let finalResponse = ""
   // preparing response for the user by using the relevant content retrieved
   if (tttResponse && tttResponse?.length > 0) {
-    let responsePrompt = responseGenerationPrompt(question, tttResponse)
+    const responsePrompt = responseGenerationPrompt(question, tttResponse)
     finalResponse = await refineBotResponse(responsePrompt)
   }
   
