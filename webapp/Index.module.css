@@ -354,7 +354,8 @@
   background: #10b981;
 }
 
-.fileProgressError {
+.fileProgressError,
+.fileProgressCancelling {
   background: #fca5a5;
 }
 
@@ -372,6 +373,10 @@
 
 .fileStatusProcessing {
   color: #8b5cf6;
+}
+
+.fileStatusCancelling {
+  color: #fca5a5;
 }
 
 .fileStatusDone {
