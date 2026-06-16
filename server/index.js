@@ -24,11 +24,8 @@ const MAX_RESULTS_FROM_TTT_PER_REQUEST = 5
 
 const sendRequest = async (handler, question) => {
   try {
-    let graphIds = handler?.user?.graphIds
-
-    // TODO:: REMOVE hardcoded
-    // we are hardcoding a graph id here as it is not attached yet in handler
-    graphIds = ["graph::adfcf9df54fc458093dee75cc479a38f"]
+    let graphIds = handler?.graphIds
+  
     const requestBody = {
       "graph_ids": graphIds,
       "text": question,
