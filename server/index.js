@@ -41,7 +41,7 @@ const sendRequest = async (handler, question) => {
       {
         headers: {
           Accept: "application/json",
-          Authorization: `Bearer ${handler?.user?.sessionId}`,
+          Authorization: handler?.headers?.authorization,
           "Content-Type": "application/json"
         }
       }
