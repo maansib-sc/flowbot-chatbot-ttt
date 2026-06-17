@@ -3,7 +3,7 @@ export const openid = {
   token_endpoint: "https://oauth2.googleapis.com/token",
   userinfo_endpoint: "https://openidconnect.googleapis.com/v1/userinfo",
   scopes_supported: ["openid", "profile", "email"],
-  client_id: "743319630762-l5u0b0lgjr8dd363r59fuqn0ulrsmc79.apps.googleusercontent.com",
+  client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
   realm: "",
 };
 
