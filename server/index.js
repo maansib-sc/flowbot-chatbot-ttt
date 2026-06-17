@@ -24,7 +24,7 @@ const MAX_RESULTS_FROM_TTT_PER_REQUEST = 5
 
 const sendRequest = async (handler, question) => {
   try {
-    let graphIds = handler?.graphIds
+    const graphIds = handler?.graphIds
   
     const requestBody = {
       "graph_ids": graphIds,
@@ -133,14 +133,18 @@ export const start = async (handler, question) => {
     };
   }
 
-  // getting the query relevant content from document trained;
-  const tttResponse = await sendRequest(handler,question)
-
   let finalResponse = ""
-  // preparing response for the user by using the relevant content retrieved
-  if (tttResponse && tttResponse?.length > 0) {
-    const responsePrompt = responseGenerationPrompt(question, tttResponse)
-    finalResponse = await refineBotResponse(responsePrompt)
+  const graphIds = handler?.graphIds
+  if (graphIds && graphIds.length > 0) {
+    // getting the query relevant content from document trained;
+    const tttResponse = await sendRequest(handler,question)
+    // preparing response for the user by using the relevant content retrieved
+    if (tttResponse && tttResponse?.length > 0) {
+      const responsePrompt = responseGenerationPrompt(question, tttResponse)
+      finalResponse = await refineBotResponse(responsePrompt)
+    }
+  } else {
+    finalResponse = "Please upload a document to train"
   }
   
   // default fallback message
