@@ -57,7 +57,7 @@
   height: 100%;
   overflow-y: auto;
   padding: 0 20px;
-  background: #ffffff;
+  background: radial-gradient(ellipse at 50% 0%, #eff6ff 0%, #f8faff 40%, #ffffff 70%);
 }
 
 /* Welcome screen */
@@ -631,52 +631,71 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 20px 20px;
-  max-width: 600px;
+  padding: 24px 24px 36px;
+  max-width: 480px;
   margin: 0 auto;
+  min-height: 100%;
+  box-sizing: border-box;
 }
 
 .welcome-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.welcome-illustration {
+  margin: 0 0 14px;
+  flex-shrink: 0;
 }
 
 .welcome-title {
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 26px;
+  font-weight: 700;
   color: #111827;
-  margin-bottom: 12px;
+  letter-spacing: -0.4px;
+  margin-bottom: 6px;
+  line-height: 1.2;
 }
 
 .welcome-subtitle {
-  font-size: 16px;
+  font-size: 15px;
   color: #6b7280;
-  margin-bottom: 10px;
-  line-height: 1.5;
+  margin-bottom: 12px;
+  line-height: 1.55;
+  max-width: 340px;
 }
 
 /* How to use section */
 .how-to-use {
-  background: #f9fafb;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 16px 20px;
-  margin-bottom: 10px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
   text-align: left;
   width: 100%;
 }
 
 .how-to-use-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   margin-bottom: 16px;
 }
 
 .how-to-use-step {
   display: flex;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   align-items: flex-start;
 }
 
@@ -685,31 +704,56 @@
 }
 
 .step-number {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: #3b82f6;
   color: white;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-top: 1px;
 }
 
 .step-content h4 {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  color: #111827;
-  margin: 0 0 4px 0;
+  color: #1e293b;
+  margin: 0 0 3px 0;
+  line-height: 1.3;
 }
 
 .step-content p {
-  font-size: 13px;
-  color: #6b7280;
+  font-size: 12px;
+  color: #64748b;
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.45;
+}
+
+.signin-divider {
+  width: 100%;
+  height: 1px;
+  background: #f1f5f9;
+  margin-bottom: 20px;
+}
+
+.signin-terms {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+.signin-terms a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.signin-terms a:hover {
+  text-decoration: underline;
 }
 
 /* Upload box in empty state */
@@ -982,55 +1026,59 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    min-height: 500px;
-    padding: 40px 20px;
+    min-height: 100%;
+    padding: 32px 20px 40px;
+    max-width: 480px;
+    margin: 0 auto;
+    text-align: center;
+    box-sizing: border-box;
   }
 
   .welcome-title {
-    font-size: 24px;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 700;
     color: #111827;
-    margin-bottom: 24px;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
     text-align: center;
   }
 
   .how-to-use {
     width: 100%;
-    max-width: 480px;
     background: #f8fafc;
     border-radius: 12px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
     border: 1px solid #e2e8f0;
+    text-align: left;
   }
 
   .how-to-use h3 {
-    font-size: 12px;
-    font-weight: 600;
-    color: #64748b;
-    margin-bottom: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 14px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.08em;
   }
 
   .how-to-step {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   .step-number {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: #3b82f6;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
     color: #fff;
     flex-shrink: 0;
     margin-top: 1px;
@@ -1042,9 +1090,9 @@
 
   .step-title {
     font-size: 13px;
-    font-weight: 500;
-    color: #334155;
-    margin: 0 0 2px 0;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 3px 0;
     line-height: 1.3;
   }
 
@@ -1052,7 +1100,7 @@
     font-size: 12px;
     color: #64748b;
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.45;
   }
 
   .upload-prompt {

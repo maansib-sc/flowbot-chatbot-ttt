@@ -1,9 +1,9 @@
 export const openid = {
-  authorization_endpoint: "",
-  token_endpoint: "",
-  userinfo_endpoint: "",
+  authorization_endpoint: "https://accounts.google.com/o/oauth2/v2/auth",
+  token_endpoint: "https://oauth2.googleapis.com/token",
+  userinfo_endpoint: "https://openidconnect.googleapis.com/v1/userinfo",
   scopes_supported: ["openid", "profile", "email"],
-  client_id: "",
+  client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
   realm: "",
 };
 
@@ -180,19 +180,24 @@ export const headerPaneHtml = `
       font-weight: 600;
       color: #111827;
     }
+    .ttt-user-wrap {
+      position: relative;
+    }
     .ttt-user-pill {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 12px 6px 6px;
+      padding: 6px 10px 6px 6px;
       border: 1px solid #e5e7eb;
       border-radius: 20px;
       background: white;
       cursor: pointer;
       transition: all 0.2s;
+      user-select: none;
     }
     .ttt-user-pill:hover {
       background: #f9fafb;
+      border-color: #d1d5db;
     }
     .ttt-user-avatar {
       width: 28px;
@@ -205,16 +210,84 @@ export const headerPaneHtml = `
       color: white;
       font-size: 13px;
       font-weight: 600;
+      flex-shrink: 0;
+    }
+    .ttt-user-meta {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      text-align: left;
     }
     .ttt-user-name {
       font-size: 14px;
       color: #374151;
       font-weight: 500;
     }
+    .ttt-user-email {
+      font-size: 11px;
+      color: #9ca3af;
+      font-weight: 400;
+    }
     .ttt-chevron {
+      width: 14px;
+      height: 14px;
+      color: #9ca3af;
+      transition: transform 0.2s;
+    }
+    .ttt-user-wrap.open .ttt-chevron {
+      transform: rotate(180deg);
+    }
+    .ttt-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 180px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+      z-index: 200;
+      overflow: hidden;
+      padding: 4px 0;
+    }
+    .ttt-user-wrap.open .ttt-dropdown {
+      display: block;
+    }
+    .ttt-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      font-size: 14px;
+      color: #374151;
+      cursor: pointer;
+      transition: background 0.15s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+    }
+    .ttt-dropdown-item:hover {
+      background: #f9fafb;
+    }
+    .ttt-dropdown-item svg {
       width: 16px;
       height: 16px;
-      color: #9ca3af;
+      color: #6b7280;
+      flex-shrink: 0;
+    }
+    .ttt-dropdown-item.danger {
+      color: #ef4444;
+    }
+    .ttt-dropdown-item.danger svg {
+      color: #ef4444;
+    }
+    .ttt-dropdown-divider {
+      height: 1px;
+      background: #f3f4f6;
+      margin: 4px 0;
     }
   </style>
   <div class="ttt-header">
@@ -234,12 +307,23 @@ export const headerPaneHtml = `
           <line x1="9" y1="3" x2="9" y2="21"></line>
         </svg>
       </button>
-      <div class="ttt-user-pill">
-        <div class="ttt-user-avatar">U</div>
-        <span class="ttt-user-name">User</span>
-        <svg class="ttt-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+      <div class="ttt-user-wrap" id="ttt-user-wrap">
+        <div class="ttt-user-pill" onclick="document.getElementById('ttt-user-wrap').classList.toggle('open')">
+          <div class="ttt-user-avatar">U</div>
+          <div class="ttt-user-meta">
+            <span class="ttt-user-name">User</span>
+            <span class="ttt-user-email"></span>
+          </div>
+          <svg class="ttt-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="ttt-dropdown">
+          <button class="ttt-dropdown-item danger" onclick="window.handleLogout && window.handleLogout()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign out
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -247,7 +331,6 @@ export const headerPaneHtml = `
 
 export const handleHeaderPane = (f) => {
   if (f === "logout") {
-    localStorage.removeItem("access_token");
     window.location.reload();
   }
 
