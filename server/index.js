@@ -2,7 +2,10 @@ const axios = require("axios");
 const dotenv = require("dotenv");
 const path = require("path");
 dotenv.config({
-  path: path.join(__dirname, "../../configuration/flowbot-chatbot-ttt/server/.env")
+  path: path.join(
+    process.cwd(),
+    "configuration/flowbot-chatbot-ttt/server/.env"
+  )
 });
 
 
