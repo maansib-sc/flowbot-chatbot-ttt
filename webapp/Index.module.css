@@ -2520,3 +2520,55 @@
 .sourceItem svg {
   transition: transform .2s ease;
 }
+
+.questionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 24px 20px 0;
+  max-width: 760px;
+}
+
+.questionTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.questionChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 14px 22px;
+  border: 1px solid #ddd6fe;
+  border-radius: 16px;
+  background: #f5f3ff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.questionChip:hover {
+  background: #ede9fe;
+  border-color: #c4b5fd;
+}
+
+.questionChip:active {
+  transform: scale(0.98);
+}
+
+.questionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8b5cf6;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1;
+  flex-shrink: 0;
+}
