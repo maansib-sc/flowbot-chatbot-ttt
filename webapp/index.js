@@ -27,6 +27,7 @@ export const showUserResponseFirst = true;
 export const hideEditButton = true;
 export const leftPanelEnabled = true;
 export const drawerEnabled = true;
+export const showHistory = true;
 export const conversational = true;
 export const loaderEnabled = true;
 export const referenceDocumentViewEnabled = true;
