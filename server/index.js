@@ -23,7 +23,7 @@ export const openid = {
 
 const GPT_BEARER_TOKEN = process?.env?.GPT_BEARER_TOKEN;
 const TTT_URL = process?.env?.TTT_URL;
-const TTT_API_KEY = process?.env?.TTT_API_KEY;
+const TTT_AUTH = process?.env?.NEXT_PUBLIC_TDB_TTT_SERVICE_AUTHORIZATION;
 const MAX_RESULTS_FROM_TTT_PER_REQUEST = 5
 
 const sendRequest = async (handler, question) => {
@@ -42,7 +42,7 @@ const sendRequest = async (handler, question) => {
       {
         headers: {
           Accept: "application/json",
-          Authorization: TTT_API_KEY ? `Bearer ${TTT_API_KEY}` : handler?.headers?.authorization,
+          Authorization: TTT_AUTH ? `Bearer ${TTT_AUTH}` : handler?.headers?.authorization,
           "Content-Type": "application/json"
         }
       }
