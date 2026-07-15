@@ -330,10 +330,6 @@ export const headerPaneHtml = `
 `;
 
 export const handleHeaderPane = (f) => {
-  if (f === "logout") {
-    window.location.reload();
-  }
-
   if (f === "login") {
     setTimeout(() => {
       const logout = document.getElementById("logout-btn");
